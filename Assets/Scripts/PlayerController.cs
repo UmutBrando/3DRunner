@@ -11,15 +11,23 @@ public class PlayerController : MonoBehaviour
     public float xSpeed;
     public float limitX;
 
+    public CollectCoin collectCoinScript;
+    public GameObject Player;
     void Start()
     {
+        collectCoinScript = Player.GetComponent<CollectCoin>();
 
     }
 
 
     void Update()
     {
-        SwipeCheck();
+
+        if (!collectCoinScript.loseGame == true)
+        {
+            SwipeCheck();
+        }
+        
 
 
     }

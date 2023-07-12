@@ -9,6 +9,19 @@ public class CollectCoin : MonoBehaviour
     public int score;
     public TextMeshProUGUI coinText;
     public PlayerController playerControllerScript;
+    public Animator PlayerAnim;
+    public GameObject Player;
+    public GameObject EndPanel;
+
+    public bool loseGame;
+
+
+    private void Start()
+    {
+      
+        PlayerAnim = Player.GetComponentInChildren<Animator>();
+       
+    }
 
 
 
@@ -17,9 +30,12 @@ public class CollectCoin : MonoBehaviour
         if (collision.collider.CompareTag("Enemy"))
         {
             Debug.Log("Dokundun");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            EndPanel.SetActive(true);
+            PlayerAnim.SetBool("lose", true);
+            playerControllerScript.runningSpeed = 0;
+            loseGame = true;
         }
- 
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,6 +49,22 @@ public class CollectCoin : MonoBehaviour
         {
             Debug.Log("Bitti");
             playerControllerScript.runningSpeed = 0;
+            loseGame = true;
+
+            if (score >= 100)
+            {
+                transform.Rotate(transform.rotation.x, 180, transform.rotation.z, Space.Self);
+                Debug.Log("Win");
+                PlayerAnim.SetBool("win", true);
+                EndPanel.SetActive(true);
+            }
+            else
+            {
+                PlayerAnim.SetBool("lose", true);
+                EndPanel.SetActive(true);
+            
+            }
+                
         }
     }
     public void AddCoin()
@@ -40,5 +72,8 @@ public class CollectCoin : MonoBehaviour
         score++;
         coinText.text = "Score: " + score.ToString();
     }
-
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }
